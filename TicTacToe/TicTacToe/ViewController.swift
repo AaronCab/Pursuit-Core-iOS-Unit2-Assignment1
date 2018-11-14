@@ -10,11 +10,23 @@ import UIKit
 
 class ViewController: UIViewController {
 
+    var gameBrain: TicTacToeBrain = TicTacToeBrain()
+    
   override func viewDidLoad() {
     super.viewDidLoad()
-    // Do any additional setup after loading the view, typically from a nib.
   }
 
+    @IBAction func buttonPressed(_ sender: GameButton) {
+        let turn = gameBrain.playerTurn
+        
+        sender.setImage(turn.image(), for: .normal)
 
+        
+        gameBrain.updateBrain(row: sender.row, col: sender.col)
+        
+        
+        sender.isUserInteractionEnabled = false
+    }
+    
 }
 
