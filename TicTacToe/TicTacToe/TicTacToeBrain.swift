@@ -8,14 +8,21 @@
 
 import UIKit
 
+enum Square {
+    case x
+    case o
+    case empty
+    
+}
+
 class TicTacToeBrain {
     var playerTurn = Turn.playerOne
-//    let winningCombos = [[0,1,2], [3,4,5], [6,7,8], [0,3,6], [1,4,7],[2,5,8], [0,4,8], [2,4,6]]
     
-    enum Turn: String, CaseIterable{
+    
+    enum Turn: CaseIterable{
         case playerOne
         case playerTwo
-
+        
         func image() -> UIImage {
             var buttonImage: UIImage!
             switch self{
@@ -23,7 +30,7 @@ class TicTacToeBrain {
                 buttonImage = UIImage(named: "x-image")
             case .playerTwo:
                 buttonImage = UIImage(named: "o-image")
-
+                
             }
             return buttonImage
         }
@@ -45,25 +52,55 @@ class TicTacToeBrain {
         playerTurn.toggle()
     }
     
-//    func checkForWin() -> playerTurn? {
-//        for combo in winningCombos {
-//            let row = combo.map {_ in gameboard[0]}
-//            if (row[0]) != nil && row[0] == row[1] && row[1] == row[2] {
-//                return row[0]
-//            }
-//        }
-//        return nil
-//    }
-    
-    enum Square {
-        case x
-        case o
-        case empty
+    func checkForWin() -> GameStatus {
+        var diagonal1 = [Square]()
+        for i in 0..<gameboard.count {
+            diagonal1.append(gameboard[i][i])
+            
+        }
+        if diagonal1 == [.x,.x,.x]{
+            return .playerOneVictory
+        } else if diagonal1 == [.o,.o,.o] {
+            return .playerTwoVictory
+        }
         
+        var diagonal2 = [Square]()
+        for i in 0..<gameboard.count {
+            diagonal2.append(gameboard[i][gameboard.count - 1 - i])
+        }
+        if diagonal2 == [.x,.x,.x]{
+            return .playerOneVictory
+        } else if diagonal2 == [.o,.o,.o] {
+            return .playerTwoVictory
+        }
+        
+        for rowIndex in gameboard{
+            if rowIndex == [.x,.x,.x]{
+                return .playerOneVictory
+            } else if rowIndex == [.o,.o,.o] {
+                return .playerTwoVictory
+            }
+        }
+        
+        for colIndex in 0..<gameboard[0].count {
+            var col = [Square]()
+            for rowIndex in 0..<gameboard.count {
+                col.append(gameboard[rowIndex][colIndex])
+                if col == [.x,.x,.x] {
+                    return .playerOneVictory
+                } else if col == [.o,.o,.o] {
+                    return .playerTwoVictory
+                }
+            }
+        }
+            
+            return .onGoing
     }
-    
-    var gameboard = ([[Square]](repeating: [Square](repeating: .empty, count: 3), count: 3))
-    
-    
-    
+        
+        enum GameStatus {
+            case playerOneVictory, playerTwoVictory, tie, onGoing
+        }
+        
+        var gameboard = ([[Square]](repeating: [Square](repeating: .empty, count: 3), count: 3))
+        
 }
