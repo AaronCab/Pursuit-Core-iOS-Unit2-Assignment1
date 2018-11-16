@@ -12,7 +12,7 @@ import UIKit
 class ViewController: UIViewController {
     
     @IBOutlet var allTheButtons: [GameButton]!
-    var gameBrain: TicTacToeBrain = TicTacToeBrain()
+    var boardBrain: TicTacToeBrain = TicTacToeBrain()
     
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -22,13 +22,13 @@ class ViewController: UIViewController {
     
     @IBAction func buttonPressed(_ sender: GameButton) {
     
-        let turn = gameBrain.playerTurn
+        let turn = boardBrain.userTurn
         
         sender.setImage(turn.image(), for: .normal)
         
-        gameBrain.updateBrain(row: sender.row, col: sender.col)
-        print(gameBrain.checkForWin())
-        let result = gameBrain.checkForWin()
+        boardBrain.updateBrain(row: sender.row, col: sender.col)
+        print(boardBrain.checkForWin())
+        let result = boardBrain.checkForWin()
         switch result{
         case .playerOneVictory:
             gameResult.text = "Player One Victory"
@@ -43,7 +43,7 @@ class ViewController: UIViewController {
         case .tie:
             print(turnCount)
             if turnCount == 18 {
-             gameResult.text = "Its a tie"
+             gameResult.text = "Its a Tie!"
             }
         case .onGoing:
             print("default")
@@ -55,13 +55,13 @@ class ViewController: UIViewController {
     
     @IBAction func newGame(_ sender: UIButton) {
         
-        gameBrain.gameboard = ([[Square]](repeating: [Square](repeating: .empty, count: 3), count: 3))
+        boardBrain.gameDisplay = ([[Square]](repeating: [Square](repeating: .empty, count: 3), count: 3))
         turnCount = 0
         gameResult.text = "Click Anywhere To Start"
-        _ = gameBrain.playerTurn
+        _ = boardBrain.userTurn
        
         //sender.setImage(turn.image(), for: .normal)
-        gameBrain.playerTurn = .playerOne
+        boardBrain.userTurn = .userOne
         allTheButtons.forEach{$0.isEnabled = true}
         allTheButtons.forEach{ (button) in
             button.setImage(UIImage(), for: .normal)

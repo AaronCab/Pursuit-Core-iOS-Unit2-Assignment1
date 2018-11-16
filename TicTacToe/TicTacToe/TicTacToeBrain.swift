@@ -18,19 +18,19 @@ enum Square {
 var turnCount = 0
 
 class TicTacToeBrain {
-    var playerTurn = Turn.playerOne
+    var userTurn = Turn.userOne
     
     
     enum Turn: CaseIterable{
-        case playerOne
-        case playerTwo
+        case userOne
+        case userTwo
         
         func image() -> UIImage {
             var buttonImage: UIImage!
             switch self{
-            case .playerOne:
+            case .userOne:
                 buttonImage = UIImage(named: "x-image")
-            case .playerTwo:
+            case .userTwo:
                 buttonImage = UIImage(named: "o-image")
                 
             }
@@ -38,26 +38,26 @@ class TicTacToeBrain {
         }
         mutating func toggle() {
             switch self {
-            case .playerOne: self = .playerTwo
-            case .playerTwo: self = .playerOne
+            case .userOne: self = .userTwo
+            case .userTwo: self = .userOne
             }
         }
     }
     
     func updateBrain(row: Int, col: Int) {
         let square: Square
-        switch playerTurn {
-        case .playerOne: square = .x
-        case .playerTwo: square = .o
+        switch userTurn {
+        case .userOne: square = .x
+        case .userTwo: square = .o
         }
-        gameboard[row][col] = square
-        playerTurn.toggle()
+        gameDisplay[row][col] = square
+        userTurn.toggle()
     }
     
-    func checkForWin() -> GameStatus {
+    func checkForWin() -> GameEnd {
         var diagonal1 = [Square]()
-        for i in 0..<gameboard.count {
-            diagonal1.append(gameboard[i][i])
+        for i in 0..<gameDisplay.count {
+            diagonal1.append(gameDisplay[i][i])
             
         }
         if diagonal1 == [.x,.x,.x]{
@@ -67,8 +67,8 @@ class TicTacToeBrain {
         }
         
         var diagonal2 = [Square]()
-        for i in 0..<gameboard.count {
-            diagonal2.append(gameboard[i][gameboard.count - 1 - i])
+        for i in 0..<gameDisplay.count {
+            diagonal2.append(gameDisplay[i][gameDisplay.count - 1 - i])
         }
         if diagonal2 == [.x,.x,.x]{
             return .playerOneVictory
@@ -76,7 +76,7 @@ class TicTacToeBrain {
             return .playerTwoVictory
         }
         
-        for rowIndex in gameboard{
+        for rowIndex in gameDisplay{
             if rowIndex == [.x,.x,.x]{
                 return .playerOneVictory
             } else if rowIndex == [.o,.o,.o] {
@@ -84,10 +84,10 @@ class TicTacToeBrain {
             }
         }
         
-        for colIndex in 0..<gameboard[0].count {
+        for colIndex in 0..<gameDisplay[0].count {
             var col = [Square]()
-            for rowIndex in 0..<gameboard.count {
-                col.append(gameboard[rowIndex][colIndex])
+            for rowIndex in 0..<gameDisplay.count {
+                col.append(gameDisplay[rowIndex][colIndex])
                 if col == [.x,.x,.x] {
                     return .playerOneVictory
                 } else if col == [.o,.o,.o] {
@@ -99,10 +99,10 @@ class TicTacToeBrain {
             return .tie
     }
         
-        enum GameStatus {
+        enum GameEnd {
             case playerOneVictory, playerTwoVictory, tie, onGoing
         }
         
-        var gameboard = ([[Square]](repeating: [Square](repeating: .empty, count: 3), count: 3))
+        var gameDisplay = ([[Square]](repeating: [Square](repeating: .empty, count: 3), count: 3))
         
 }
