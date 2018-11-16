@@ -48,7 +48,6 @@ class ViewController: UIViewController {
         case .onGoing:
             print("default")
         }
-        sender.isEnabled = false
         
     }
     
