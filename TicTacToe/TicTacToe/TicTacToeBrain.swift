@@ -15,6 +15,8 @@ enum Square {
     
 }
 
+var turnCount = 0
+
 class TicTacToeBrain {
     var playerTurn = Turn.playerOne
     
@@ -42,7 +44,7 @@ class TicTacToeBrain {
         }
     }
     
-    func updateBrain(row: Int, col: Int){
+    func updateBrain(row: Int, col: Int) {
         let square: Square
         switch playerTurn {
         case .playerOne: square = .x
@@ -93,8 +95,8 @@ class TicTacToeBrain {
                 }
             }
         }
-            
-            return .onGoing
+            turnCount += 1
+            return .tie
     }
         
         enum GameStatus {

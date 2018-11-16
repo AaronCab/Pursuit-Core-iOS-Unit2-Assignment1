@@ -27,8 +27,9 @@ class ViewController: UIViewController {
         sender.setImage(turn.image(), for: .normal)
         
         gameBrain.updateBrain(row: sender.row, col: sender.col)
-        
-        switch gameBrain.checkForWin(){
+        print(gameBrain.checkForWin())
+        let result = gameBrain.checkForWin()
+        switch result{
         case .playerOneVictory:
             gameResult.text = "Player One Victory"
             allTheButtons.forEach{(button) in
@@ -40,23 +41,27 @@ class ViewController: UIViewController {
                 button.isEnabled = false
             }
         case .tie:
-            allTheButtons.forEach{(button) in
-                button.isEnabled = false
+            print(turnCount)
+            if turnCount == 18 {
+             gameResult.text = "Its a tie"
             }
         case .onGoing:
             print("default")
         }
-        
+        sender.isEnabled = false
         
     }
     
     
     @IBAction func newGame(_ sender: UIButton) {
+        
         gameBrain.gameboard = ([[Square]](repeating: [Square](repeating: .empty, count: 3), count: 3))
-        
-        let turn = gameBrain.playerTurn
-        
-        sender.setImage(turn.image(), for: .normal)
+        turnCount = 0
+        gameResult.text = "Click Anywhere To Start"
+        _ = gameBrain.playerTurn
+       
+        //sender.setImage(turn.image(), for: .normal)
+        gameBrain.playerTurn = .playerOne
         allTheButtons.forEach{$0.isEnabled = true}
         allTheButtons.forEach{ (button) in
             button.setImage(UIImage(), for: .normal)
